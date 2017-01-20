@@ -9,16 +9,14 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:background="@color/theme_primary_dark"
-        android:theme="@style/ThemeOverlay.AppCompat"
         android:fitsSystemWindows="true"
         >
         <android.support.design.widget.CollapsingToolbarLayout
+
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/theme_primary_dark"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <android.support.v7.widget.Toolbar
                 android:id="@+id/mToolbar"

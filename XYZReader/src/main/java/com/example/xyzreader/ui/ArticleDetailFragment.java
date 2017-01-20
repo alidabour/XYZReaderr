@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.view.NestedScrollingChild;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
@@ -44,7 +46,7 @@ public class ArticleDetailFragment extends Fragment implements
     private TextView mArticleBody;
     private FloatingActionButton mShareFAB;
     private Toolbar mToolbar;
-
+    private NestedScrollView mNestedScrollView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -104,6 +106,7 @@ public class ArticleDetailFragment extends Fragment implements
             }
         });
 
+        mNestedScrollView = (NestedScrollView) mRootView.findViewById(R.id.nestedScroll);
 
         mShareFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +117,37 @@ public class ArticleDetailFragment extends Fragment implements
                         .getIntent(), getString(R.string.action_share)));
             }
         });
+        if(mNestedScrollView != null){
+
+            mNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    if (scrollY == 0) {
+                        Log.v("Test", "TOP SCROLL");
+                        mShareFAB.setVisibility(View.VISIBLE);
+                        Log.v("Test","TOP SCROLL FAB="+mShareFAB.getVisibility());
+
+                    }else if (scrollY < oldScrollY) {
+                        Log.v(TAG, "Scroll UP");
+                        mShareFAB.setVisibility(View.INVISIBLE);
+                        Log.v("Test","Scroll UP FAB="+mShareFAB.getVisibility());
+
+                    }
+                    if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                        Log.v("Test", "BOTTOM SCROLL");
+                        mShareFAB.setVisibility(View.VISIBLE);
+                        Log.v("Test","BOTTOM SCROLL FAB="+mShareFAB.getVisibility());
+                    }else if (scrollY > oldScrollY) {
+                        Log.v(TAG, "Scroll DOWN");
+                        mShareFAB.setVisibility(View.INVISIBLE);
+                        Log.v("Test","Scroll DOWN FAB="+mShareFAB.getVisibility());
+
+                    }
+
+
+                }
+            });
+        }
 
         bindViews();
         return mRootView;
